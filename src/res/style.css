@@ -1,0 +1,29 @@
+.button {
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-background-color: linear-gradient(#61a2b1,#2A5058);
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 5, 0.0, 0, 1);
+}
+
+
+/*.tab-pane *.tab-header-area *.tab-header-background {*/
+    /*-fx-background-color:transparent;*/
+/*}*/
+
+/*.tab-pane {*/
+    /*-fx-tab-min-width:120px;*/
+    /*-fx-tab-max-width:120px;*/
+    /*-fx-tab-min-height:50px;*/
+    /*-fx-tab-max-height:50px;*/
+/*}*/
+
+/*.tab {*/
+    /*-fx-font-family: Arial;*/
+    /*-fx-font-size: 18;*/
+    /*-fx-background-color:royalblue ;*/
+/*}*/
+
+/*.tab:selected {*/
+    /*-fx-background-color:blue ;*/
+/*}*/
