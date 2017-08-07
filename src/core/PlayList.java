@@ -157,12 +157,13 @@ public class PlayList {
             }
         });
 
-        stage.setOnShowing(new EventHandler<WindowEvent>() {
+        stage.setOnShown(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
                 openned();
             }
         });
+
         return stage;
     }
 
