@@ -22,6 +22,13 @@ public class MediaRecord {
         this.displayName = displayName;
     }
 
+    public MediaRecord(int id, String displayName, String path) {
+        this.id = id;
+        this.isSelected = false;
+        this.displayName = displayName;
+        this.path = path;
+    }
+
     public void setId(int id) {
         this.id = id;
     }

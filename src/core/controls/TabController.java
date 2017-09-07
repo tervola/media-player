@@ -1,4 +1,4 @@
-package core;
+package core.controls;
 
 import javafx.scene.control.Tab;
 import ui.mptab.LocalTab;
@@ -11,8 +11,8 @@ import java.util.List;
  * Created by user on 7/20/2017.
  */
 public class TabController {
-    private Tab locaTab;
-    private Tab onlineTab;
+    private static Tab locaTab;
+    private static Tab onlineTab;
     public final List<Tab> tabList;
 
     public TabController() {
@@ -33,4 +33,9 @@ public class TabController {
         }
         throw new RuntimeException("Unknown selected tab!");
     }
+
+    public LocalTab getLocalTab(){
+        return (LocalTab) this.locaTab;
+    }
+
 }

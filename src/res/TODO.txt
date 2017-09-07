@@ -1,15 +1,22 @@
 ++UI: add tablegrid to playlist
 ++UI: add column as checkbox
+++UI: add select all checkbox
 UI: create Online tab
 UI: create fashion design
 UI: move styles to scc
-UI: mass maks composition
-UI: ADD
+++UI: mass maks composition
+++UI: ADD (add refresh)
 UI: ClearList
 UI: DEl from list
 UI: ADD online
+UI - Controller: create favorits tab
+UI - create screen movies for online.
+++UI - save to playlist
+UI - random play * all tabs
 
-add Config
+++add Config
+add Cache Temporary File
+Controller: save to playlist
 Controller: add actions to PL buttons
 Controller: add actions to main Actions: PLAY
 Controller: add actions to main Actions: PAUSE
@@ -17,12 +24,9 @@ Controller: add actions to main Actions: BACK
 Controller: add actions to main Actions: STOP
 Controller: fill table, save, load
 
-UI - Controller: create favorits tab
 Controller: create favorits for music
 
-UI - create screen movies for online.
 
 Remote Auth to google
-
 KILLER - convert from online to mp3
 

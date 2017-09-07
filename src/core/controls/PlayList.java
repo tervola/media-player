@@ -1,4 +1,4 @@
-package core;
+package core.controls;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -18,6 +18,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ui.mpbutton.*;
+import ui.mptab.LocalTab;
+
+import java.io.IOException;
 
 /**
  * Created by user on 7/17/2017.
@@ -28,8 +31,9 @@ public class PlayList {
     private static AbstractButton ADD_ONLINE = new AddOnlineButton();
     private static AbstractButton DEL = new DelButton();
     private static AbstractButton CLEAN_PL = new CleanPlayListButton();
+    private static AbstractButton SAVE_PL = new SavePlayListButton();
 
-    private TabController controller;
+    private TabController tabController;
 
     private static PlayList instance;
     private boolean closed = true;
@@ -37,7 +41,7 @@ public class PlayList {
     private Text textTitle;
 
     private PlayList() {
-        this.controller = new TabController();
+        this.tabController = new TabController();
         this.stage = createStage();
         this.textTitle = new Text();
     }
@@ -95,7 +99,7 @@ public class PlayList {
     private TabPane createTabPanel() {
         final TabPane tabPane = new TabPane();
 
-        tabPane.getTabs().addAll(controller.getTabsList());
+        tabPane.getTabs().addAll(tabController.getTabsList());
         tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
         tabPane.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Tab>() {
             @Override
@@ -109,7 +113,7 @@ public class PlayList {
 
     private ButtonBar createButtonBar() {
         final ButtonBar buttonBar = new ButtonBar();
-        buttonBar.getButtons().addAll(ADD, ADD_ONLINE, DEL, CLEAN_PL);
+        buttonBar.getButtons().addAll(ADD, ADD_ONLINE, DEL, CLEAN_PL, SAVE_PL);
         return buttonBar;
     }
 
@@ -129,8 +133,6 @@ public class PlayList {
     private GridPane createRootPlaylistGrid() {
         final GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.BOTTOM_LEFT);
-//        gridPane.setHgap(100);
-//        gridPane.setVgap(1);
         gridPane.setPadding(new Insets(25, 25, 5, 5));
         return gridPane;
     }
@@ -141,7 +143,17 @@ public class PlayList {
         this.stage.setOnShowing(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
-                PlayList.this.textTitle.setText(PlayList.this.controller.getOppenedTab().getText());
+                PlayList.this.textTitle.setText(PlayList.this.tabController.getOppenedTab().getText());
+
+                if (PlayList.this.tabController.getOppenedTab() instanceof LocalTab) {
+                    LocalTab localTab = (LocalTab) PlayList.this.tabController.getOppenedTab();
+                    try {
+                        localTab.load();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+
             }
         });
         this.stage.show();
@@ -163,7 +175,7 @@ public class PlayList {
                 openned();
             }
         });
-
+        stage.setWidth(460);
         return stage;
     }
 
@@ -179,5 +191,9 @@ public class PlayList {
 
     public boolean isClosed() {
         return this.closed;
+    }
+
+    public TabController getTabController() {
+        return this.tabController;
     }
 }

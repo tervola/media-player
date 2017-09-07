@@ -1,5 +1,6 @@
 package core;
 
+import core.controls.PlayList;
 import ui.mpbutton.*;
 import javafx.application.Application;
 import javafx.event.EventHandler;

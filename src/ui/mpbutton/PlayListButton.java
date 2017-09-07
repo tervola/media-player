@@ -1,6 +1,6 @@
 package ui.mpbutton;
 
-import core.PlayList;
+import core.controls.PlayList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Tooltip;
