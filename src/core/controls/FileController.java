@@ -1,10 +1,12 @@
 package core.controls;
 
 import core.MediaRecord;
+import javafx.collections.ObservableList;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -17,8 +19,10 @@ public class FileController {
     private static FileController INSTANCE;
     private Properties properties;
 
-    private static String PROPERTY_FILE = "config.properties";
-    private static String PROPERTY_FIELD = "playlist";
+    private static String PROPERTY_FILE_PROPERTY = "config.properties";
+    private static String PROPERTY_FIELD_PLAYLIST = "playlist";
+    private static String PROPERTY_FIELD_CACHED_FILE = "cache";
+    private static String PROPERTY_FIELD_CACHED_FILE_VALUE = "pl.tmp";
     private List<MediaRecord> mediaRecords;
 
     private FileController() {
@@ -34,7 +38,7 @@ public class FileController {
     }
 
     public List<MediaRecord> getPlayListFromConfig() throws IOException {
-        String path = this.properties.get(PROPERTY_FIELD).toString();
+        String path = this.properties.get(PROPERTY_FIELD_PLAYLIST).toString();
         List<String> lines = new ArrayList<>();
         if (!path.isEmpty()) {
             lines = Files.readAllLines(Paths.get(path));
@@ -56,10 +60,10 @@ public class FileController {
     private void loadProperties() {
         InputStream inputStream = null;
         try {
-            if (Paths.get(PROPERTY_FILE).toFile().exists()) {
-                inputStream = new FileInputStream(new File(PROPERTY_FILE));
+            if (Paths.get(PROPERTY_FILE_PROPERTY).toFile().exists()) {
+                inputStream = new FileInputStream(new File(PROPERTY_FILE_PROPERTY));
             } else {
-                inputStream = FileController.this.getClass().getClassLoader().getResourceAsStream(PROPERTY_FILE);
+                inputStream = FileController.this.getClass().getClassLoader().getResourceAsStream(PROPERTY_FILE_PROPERTY);
 
             }
             this.properties.load(inputStream);
@@ -77,7 +81,7 @@ public class FileController {
 
         //TODO: generate default properties file
         if (this.properties.isEmpty()) {
-            saveProperties(PROPERTY_FIELD, null);
+            saveProperties(PROPERTY_FIELD_PLAYLIST, null);
         }
 
     }
@@ -86,7 +90,7 @@ public class FileController {
         OutputStream outputStream = null;
 
         try {
-            outputStream = new FileOutputStream(new File(PROPERTY_FILE));
+            outputStream = new FileOutputStream(new File(PROPERTY_FILE_PROPERTY));
             this.properties.setProperty(key, value);
             this.properties.store(outputStream, null);
         } catch (IOException e) {
@@ -103,11 +107,46 @@ public class FileController {
 
     }
 
-    public void addNewMediaRecords(List<MediaRecord> newRecords) {
+    public void setMediaRecords(List<MediaRecord> newRecords) {
         this.mediaRecords = newRecords;
     }
 
     public List<MediaRecord> getMediaRecords() {
-        return mediaRecords;
+        return this.mediaRecords;
+    }
+
+    public List<MediaRecord> getCachedPlayList() throws IOException {
+        String tmp = this.properties.get(PROPERTY_FIELD_CACHED_FILE).toString();
+        File cachedPlayListFile = new File(tmp);
+
+        List<String> lines = new ArrayList<>();
+        if (cachedPlayListFile.exists()) {
+            lines = Files.readAllLines(cachedPlayListFile.toPath());
+        }
+
+        List<MediaRecord> records = new ArrayList<>();
+        for (String line : lines) {
+            if (!line.trim().isEmpty()) {
+                String[] split = line.split(";");
+                MediaRecord m = new MediaRecord();
+                m.setDisplayName(split[0]);
+                m.setPath(split[0]);
+                records.add(m);
+            }
+        }
+        return records;
+    }
+
+    public void setCachedPlayList(ObservableList<MediaRecord> tableData) throws IOException {
+        String tmp = this.properties.get(PROPERTY_FIELD_CACHED_FILE).toString();
+        File cachedPlayListFile = new File(tmp);
+        StringBuilder stringBuilder = new StringBuilder();
+        for (MediaRecord mediaRecord : this.mediaRecords) {
+            stringBuilder.append(mediaRecord.getDisplayName());
+            stringBuilder.append(";");
+            stringBuilder.append(mediaRecord.getPath());
+            stringBuilder.append("\r\n");
+        }
+        Files.write(cachedPlayListFile.toPath(), stringBuilder.toString().getBytes(), StandardOpenOption.CREATE_NEW);
     }
 }

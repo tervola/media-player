@@ -29,7 +29,9 @@ public class SavePlayListButton extends AbstractButton {
                 if (SavePlayListButton.this.filePicker.isClosed()) {
                     String context = getRecords();
                     File newPlayList = SavePlayListButton.this.filePicker.showSaveDialog(context);
-                    SavePlayListButton.this.updateConfigFile(newPlayList);
+                    if (newPlayList != null) {
+                        SavePlayListButton.this.updateConfigFile(newPlayList);
+                    }
                 }
             }
         });

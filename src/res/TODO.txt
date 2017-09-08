@@ -16,7 +16,7 @@ UI - random play * all tabs
 
 ++add Config
 add Cache Temporary File
-Controller: save to playlist
+++Controller: save to playlist
 Controller: add actions to PL buttons
 Controller: add actions to main Actions: PLAY
 Controller: add actions to main Actions: PAUSE

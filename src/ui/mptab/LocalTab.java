@@ -168,6 +168,9 @@ public class LocalTab extends AbstractTab {
 
     public void load() throws IOException {
 
+        this.tableData = getCachedPlayList();
+        this.controller.setMediaRecords(this.tableData);
+
         if (this.tableData.size() == 0) {
             ObservableList<MediaRecord> data = createData();
             if (data.size() > 0) {
@@ -186,6 +189,11 @@ public class LocalTab extends AbstractTab {
         setContent(this.tableView);
     }
 
+    private ObservableList<MediaRecord> getCachedPlayList() throws IOException {
+        List<MediaRecord> records = this.controller.getCachedPlayList();
+        return FXCollections.observableList(records);
+    }
+
     public void savePlayList(String pathToPlayList) {
         this.controller.saveProperties(PROPERTY_FIELD, pathToPlayList);
     }
@@ -196,6 +204,7 @@ public class LocalTab extends AbstractTab {
 
     public void add() throws IOException {
         this.controller.getMediaRecords().addAll(this.tableData);
+        this.controller.setCachedPlayList(this.tableData);
         load();
     }
 

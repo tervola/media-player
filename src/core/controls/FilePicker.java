@@ -46,7 +46,7 @@ public class FilePicker {
             newRecords.add(m);
         }
 
-        this.controller.addNewMediaRecords(newRecords);
+        this.controller.setMediaRecords(newRecords);
         closed();
         stage.close();
     }
