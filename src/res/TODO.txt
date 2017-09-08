@@ -1,7 +1,6 @@
 UI: create Online tab
 UI: create fashion design
 UI: move styles to scc
-UI: DEl from list
 UI: ADD online
 UI - Controller: create favorits tab
 UI - create screen movies for online.
@@ -14,6 +13,7 @@ Controller: add actions to main Actions: PAUSE
 Controller: add actions to main Actions: BACK
 Controller: add actions to main Actions: STOP
 Controller: create favorits for music
+Controller: crypt playlists;
 
 
 Remote Auth to google

@@ -73,12 +73,13 @@ public class FilePicker {
     }
 
     private File pickFile() {
-        final FileChooser fileChooser = new FileChooser();
-        return fileChooser.showOpenDialog(stage);
+        final FileChooser fileChooser = getSingleFileChooser();
+        return fileChooser.showOpenDialog(this.stage);
     }
 
     private List<File> pickFiles() {
         final FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("MP3", "*.mp3"));
         List<File> files = fileChooser.showOpenMultipleDialog(stage);
 
         if (files == null) {
@@ -102,7 +103,7 @@ public class FilePicker {
 
     public File showSaveDialog(String content) {
         openned();
-        final FileChooser fileChooser = new FileChooser();
+        final FileChooser fileChooser = getSingleFileChooser();
         File file = fileChooser.showSaveDialog(this.stage);
 
         if (file != null) {
@@ -113,6 +114,12 @@ public class FilePicker {
         stage.close();
 
         return file;
+    }
+
+    private FileChooser getSingleFileChooser() {
+        final FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PL", "*.pl"));
+        return  fileChooser;
     }
 
     private void saveFile(String content, File file) {
