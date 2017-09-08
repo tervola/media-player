@@ -28,6 +28,7 @@ public class LocalTab extends AbstractTab {
     private final static String TOOLTIP = "Media from local device";
     private static String PROPERTY_FIELD = "playlist";
     private List<MediaRecord> mediaRecords;
+    private List<MediaRecord> chechedMediaRecords;
     ObservableList<MediaRecord> tableData;
     private TableView tableView;
     private final FileController controller;
@@ -36,6 +37,7 @@ public class LocalTab extends AbstractTab {
         setText(TEXT);
         setTooltip(new Tooltip(TOOLTIP));
         this.mediaRecords = new ArrayList<>();
+        this.chechedMediaRecords = new ArrayList<>();
         this.controller = FileController.getInstance();
         this.tableData = FXCollections.observableArrayList();
     }
@@ -131,10 +133,11 @@ public class LocalTab extends AbstractTab {
     private void changeMediaRecordsList(Boolean value, MediaRecord mediaRecord) {
         mediaRecord.setSelected(value);
         if (value) {
-            this.mediaRecords.add(mediaRecord);
+            System.out.println("here!!");
         } else {
-            this.mediaRecords.add(mediaRecord);
+            System.out.println("there!!");
         }
+
     }
 
     private TableColumn createIndexColumn() {
@@ -168,10 +171,19 @@ public class LocalTab extends AbstractTab {
 
         this.tableData = getCachedPlayList();
         this.controller.setMediaRecords(this.tableData);
-        this.tableView.setItems(this.tableData);
 
+        updateRowIndex();
+
+        this.tableView.setItems(this.tableData);
         this.tableView.refresh();
         setContent(this.tableView);
+    }
+
+    private void updateRowIndex() {
+        int index = 1;
+        for (MediaRecord record : this.tableData) {
+            record.setId(index++);
+        }
     }
 
     private ObservableList<MediaRecord> getCachedPlayList() {
@@ -204,5 +216,16 @@ public class LocalTab extends AbstractTab {
     public void cleanPlayList() {
         this.controller.getMediaRecords().clear();
         updateTableData(FXCollections.emptyObservableList());
+    }
+
+    public void removeChecked() {
+        List<MediaRecord> newList = new ArrayList<>();
+        for (MediaRecord mediaRecord : this.controller.getMediaRecords()) {
+            if (!mediaRecord.isSelected()) {
+                newList.add(mediaRecord);
+            }
+        }
+        this.controller.setMediaRecords(newList);
+        updateTableData(FXCollections.observableArrayList(newList));
     }
 }

@@ -73,7 +73,6 @@ public class FileController {
                 inputStream = new FileInputStream(new File(PROPERTY_FILE_PROPERTY));
             } else {
                 inputStream = FileController.this.getClass().getClassLoader().getResourceAsStream(PROPERTY_FILE_PROPERTY);
-
             }
             this.properties.load(inputStream);
         } catch (IOException e) {

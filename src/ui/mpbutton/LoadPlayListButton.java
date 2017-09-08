@@ -23,7 +23,7 @@ public class LoadPlayListButton extends AbstractButton {
             @Override
             public void handle(final ActionEvent event) {
                 if (LoadPlayListButton.this.filePicker.isClosed()) {
-                    boolean isPickedNewRecords = LoadPlayListButton.this.filePicker.showLoadDialog();
+                    boolean isPickedNewRecords = LoadPlayListButton.this.filePicker.showLoadPlayListDialog();
                     if (isPickedNewRecords) {
                         LocalTab localTab = playList.getTabController().getLocalTab();
                         localTab.loadFromSavedPlayList();

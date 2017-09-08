@@ -32,16 +32,11 @@ public class CleanPlayListButton extends AbstractButton {
                 alert.setTitle("Confirmation Dialog");
                 alert.setContentText(WARNING_MESSAGE);
                 Optional<ButtonType> result = alert.showAndWait();
-                if(result.get() == ButtonType.OK) {
+                if (result.get() == ButtonType.OK) {
                     LocalTab localTab = playList.getTabController().getLocalTab();
                     localTab.cleanPlayList();
                 }
 
-//                boolean isPickedNewRecords = AddButton.this.filePicker.showLoadDialog();
-//                if (isPickedNewRecords) {
-//                    LocalTab localTab = playList.getTabController().getLocalTab();
-//                    localTab.add();
-//                }
             }
         });
     }
