@@ -39,6 +39,10 @@ public class FileController {
 
     public List<MediaRecord> getPlayListFromConfig() throws IOException {
         String path = this.properties.get(PROPERTY_FIELD_PLAYLIST).toString();
+        return readFile(path);
+    }
+
+    private List<MediaRecord> readFile(String path) throws IOException {
         List<String> lines = new ArrayList<>();
         if (!path.isEmpty()) {
             lines = Files.readAllLines(Paths.get(path));
@@ -55,6 +59,7 @@ public class FileController {
             }
         }
         return records;
+
     }
 
     private void loadProperties() {
@@ -117,24 +122,7 @@ public class FileController {
 
     public List<MediaRecord> getCachedPlayList() throws IOException {
         String tmp = this.properties.get(PROPERTY_FIELD_CACHED_FILE).toString();
-        File cachedPlayListFile = new File(tmp);
-
-        List<String> lines = new ArrayList<>();
-        if (cachedPlayListFile.exists()) {
-            lines = Files.readAllLines(cachedPlayListFile.toPath());
-        }
-
-        List<MediaRecord> records = new ArrayList<>();
-        for (String line : lines) {
-            if (!line.trim().isEmpty()) {
-                String[] split = line.split(";");
-                MediaRecord m = new MediaRecord();
-                m.setDisplayName(split[0]);
-                m.setPath(split[0]);
-                records.add(m);
-            }
-        }
-        return records;
+        return readFile(tmp);
     }
 
     public void setCachedPlayList(ObservableList<MediaRecord> tableData) throws IOException {

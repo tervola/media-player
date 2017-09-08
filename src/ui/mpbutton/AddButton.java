@@ -26,12 +26,14 @@ public class AddButton extends AbstractButton {
             @Override
             public void handle(final ActionEvent event) {
                 if (AddButton.this.filePicker.isClosed()) {
-                    AddButton.this.filePicker.showLoadDialog();
-                    LocalTab localTab = playList.getTabController().getLocalTab();
-                    try {
-                        localTab.add();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    boolean isPickedNewRecords = AddButton.this.filePicker.showLoadDialog();
+                    if(isPickedNewRecords) {
+                        LocalTab localTab = playList.getTabController().getLocalTab();
+                        try {
+                            localTab.add();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }

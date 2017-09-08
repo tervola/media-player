@@ -35,20 +35,26 @@ public class FilePicker {
         return instance;
     }
 
-    public void showLoadDialog() {
+    public boolean showLoadDialog() {
         openned();
+        boolean success = false;
         List<File> chosen = pickFiles();
-        List<MediaRecord> newRecords = new ArrayList<>();
-        for (File file : chosen) {
-            MediaRecord m = new MediaRecord();
-            m.setPath(file.getAbsolutePath());
-            m.setDisplayName(file.getName());
-            newRecords.add(m);
-        }
 
-        this.controller.setMediaRecords(newRecords);
+        if (chosen.size() > 0) {
+            List<MediaRecord> newRecords = new ArrayList<>();
+            for (File file : chosen) {
+                MediaRecord m = new MediaRecord();
+                m.setPath(file.getAbsolutePath());
+                m.setDisplayName(file.getName());
+                newRecords.add(m);
+            }
+
+            this.controller.setMediaRecords(newRecords);
+            success = true;
+        }
         closed();
         stage.close();
+        return success;
     }
 
     private List<File> pickFiles() {
