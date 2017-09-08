@@ -57,15 +57,30 @@ public class FilePicker {
         return success;
     }
 
+    public boolean showLoadPlayListDialog() {
+        openned();
+        boolean success = false;
+        File chosen = pickFile();
+
+        if (chosen != null) {
+            List<MediaRecord> loadedRecords = this.controller.getPlayListFromConfig();
+            this.controller.setMediaRecords(loadedRecords);
+            success = true;
+        }
+        closed();
+        stage.close();
+        return success;
+    }
+
+    private File pickFile() {
+        final FileChooser fileChooser = new FileChooser();
+        return fileChooser.showOpenDialog(stage);
+    }
+
     private List<File> pickFiles() {
         final FileChooser fileChooser = new FileChooser();
         List<File> files = fileChooser.showOpenMultipleDialog(stage);
 
-//        if (files != null) {
-//            for (File file : files) {
-//                files.add(file);
-//            }
-//        }
         if (files == null) {
             return new ArrayList<>();
         } else {

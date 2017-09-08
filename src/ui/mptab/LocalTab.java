@@ -65,8 +65,6 @@ public class LocalTab extends AbstractTab {
         this.tableView.getColumns().addAll(indexColumn, checkboxColumn, descriptionColumn);
         this.tableView.setScaleShape(true);
 
-//        tableData = createFakeData();
-
         return tableView;
     }
 
@@ -156,40 +154,27 @@ public class LocalTab extends AbstractTab {
         );
     }
 
-    private ObservableList<MediaRecord> createData() throws IOException {
+    public void loadFromSavedPlayList() {
 
-        List<MediaRecord> records = controller.getPlayListFromConfig();
-        if (records.size() > 0) {
-            return FXCollections.observableArrayList(records);
-        } else {
-            return FXCollections.observableArrayList();
-        }
-    }
-
-    public void load() throws IOException {
-
-        this.tableData = getCachedPlayList();
-        this.controller.setMediaRecords(this.tableData);
-
-        if (this.tableData.size() == 0) {
-            ObservableList<MediaRecord> data = createData();
-            if (data.size() > 0) {
-                this.tableData = data;
-            } else {
-                this.tableData = createFakeData();
-            }
-        } else {
-            List<MediaRecord> records = this.controller.getMediaRecords();
-            this.tableData = FXCollections.observableArrayList(records);
-        }
-
+        List<MediaRecord> mediaRecords = this.controller.getMediaRecords();
+        this.tableData = FXCollections.observableList(mediaRecords);
         this.tableView.setItems(this.tableData);
 
         this.tableView.refresh();
         setContent(this.tableView);
     }
 
-    private ObservableList<MediaRecord> getCachedPlayList() throws IOException {
+    public void load() {
+
+        this.tableData = getCachedPlayList();
+        this.controller.setMediaRecords(this.tableData);
+        this.tableView.setItems(this.tableData);
+
+        this.tableView.refresh();
+        setContent(this.tableView);
+    }
+
+    private ObservableList<MediaRecord> getCachedPlayList() {
         List<MediaRecord> records = this.controller.getCachedPlayList();
         return FXCollections.observableList(records);
     }
@@ -202,10 +187,22 @@ public class LocalTab extends AbstractTab {
         return this.tableData;
     }
 
-    public void add() throws IOException {
+    public void add() {
         this.controller.getMediaRecords().addAll(this.tableData);
-        this.controller.setCachedPlayList(this.tableData);
-        load();
+        updateTableData(this.tableData);
     }
 
+    private void updateTableData(ObservableList<MediaRecord> data) {
+        try {
+            this.controller.setCachedPlayList(data);
+            load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void cleanPlayList() {
+        this.controller.getMediaRecords().clear();
+        updateTableData(FXCollections.emptyObservableList());
+    }
 }

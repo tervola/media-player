@@ -20,8 +20,6 @@ import javafx.stage.WindowEvent;
 import ui.mpbutton.*;
 import ui.mptab.LocalTab;
 
-import java.io.IOException;
-
 /**
  * Created by user on 7/17/2017.
  */
@@ -32,6 +30,7 @@ public class PlayList {
     private static AbstractButton DEL = new DelButton();
     private static AbstractButton CLEAN_PL = new CleanPlayListButton();
     private static AbstractButton SAVE_PL = new SavePlayListButton();
+    private static AbstractButton LOAD_PL = new LoadPlayListButton();
 
     private TabController tabController;
 
@@ -113,7 +112,7 @@ public class PlayList {
 
     private ButtonBar createButtonBar() {
         final ButtonBar buttonBar = new ButtonBar();
-        buttonBar.getButtons().addAll(ADD, ADD_ONLINE, DEL, CLEAN_PL, SAVE_PL);
+        buttonBar.getButtons().addAll(ADD, ADD_ONLINE, DEL, CLEAN_PL, SAVE_PL, LOAD_PL);
         return buttonBar;
     }
 
@@ -147,11 +146,7 @@ public class PlayList {
 
                 if (PlayList.this.tabController.getOppenedTab() instanceof LocalTab) {
                     LocalTab localTab = (LocalTab) PlayList.this.tabController.getOppenedTab();
-                    try {
-                        localTab.load();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    localTab.load();
                 }
 
             }
@@ -175,7 +170,7 @@ public class PlayList {
                 openned();
             }
         });
-        stage.setWidth(460);
+        stage.setWidth(560);
         return stage;
     }
 

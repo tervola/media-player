@@ -37,15 +37,19 @@ public class FileController {
         return INSTANCE;
     }
 
-    public List<MediaRecord> getPlayListFromConfig() throws IOException {
+    public List<MediaRecord> getPlayListFromConfig() {
         String path = this.properties.get(PROPERTY_FIELD_PLAYLIST).toString();
         return readFile(path);
     }
 
-    private List<MediaRecord> readFile(String path) throws IOException {
+    private List<MediaRecord> readFile(String path)  {
         List<String> lines = new ArrayList<>();
         if (!path.isEmpty()) {
-            lines = Files.readAllLines(Paths.get(path));
+            try {
+                lines = Files.readAllLines(Paths.get(path));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
         List<MediaRecord> records = new ArrayList<>();
@@ -54,7 +58,7 @@ public class FileController {
                 String[] split = line.split(";");
                 MediaRecord m = new MediaRecord();
                 m.setDisplayName(split[0]);
-                m.setPath(split[0]);
+                m.setPath(split[1]);
                 records.add(m);
             }
         }
@@ -120,13 +124,14 @@ public class FileController {
         return this.mediaRecords;
     }
 
-    public List<MediaRecord> getCachedPlayList() throws IOException {
+    public List<MediaRecord> getCachedPlayList() {
         String tmp = this.properties.get(PROPERTY_FIELD_CACHED_FILE).toString();
         return readFile(tmp);
     }
 
     public void setCachedPlayList(ObservableList<MediaRecord> tableData) throws IOException {
         String tmp = this.properties.get(PROPERTY_FIELD_CACHED_FILE).toString();
+        Files.deleteIfExists(Paths.get(tmp));
         File cachedPlayListFile = new File(tmp);
         StringBuilder stringBuilder = new StringBuilder();
         for (MediaRecord mediaRecord : this.mediaRecords) {
@@ -135,6 +140,6 @@ public class FileController {
             stringBuilder.append(mediaRecord.getPath());
             stringBuilder.append("\r\n");
         }
-        Files.write(cachedPlayListFile.toPath(), stringBuilder.toString().getBytes(), StandardOpenOption.CREATE_NEW);
+        Files.write(cachedPlayListFile.toPath(), stringBuilder.toString().getBytes(), StandardOpenOption.CREATE);
     }
 }

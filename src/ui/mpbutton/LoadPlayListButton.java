@@ -6,14 +6,13 @@ import javafx.scene.control.Tooltip;
 import ui.mptab.LocalTab;
 
 /**
- * Created by user on 7/18/2017.
+ * Created by user on 9/8/2017.
  */
-public class AddButton extends AbstractButton {
+public class LoadPlayListButton extends AbstractButton {
+    private final static String TEXT = "Load PL";
+    private final static String TOOLTIP = "loading play list";
 
-    private final static String TEXT = "Add..";
-    private final static String TOOLTIP = "Add items to play list";
-
-    public AddButton() {
+    public LoadPlayListButton() {
         super.setTooltip(new Tooltip(TOOLTIP));
         super.setText(TEXT);
     }
@@ -23,11 +22,11 @@ public class AddButton extends AbstractButton {
         this.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent event) {
-                if (AddButton.this.filePicker.isClosed()) {
-                    boolean isPickedNewRecords = AddButton.this.filePicker.showLoadDialog();
+                if (LoadPlayListButton.this.filePicker.isClosed()) {
+                    boolean isPickedNewRecords = LoadPlayListButton.this.filePicker.showLoadDialog();
                     if (isPickedNewRecords) {
                         LocalTab localTab = playList.getTabController().getLocalTab();
-                        localTab.add();
+                        localTab.loadFromSavedPlayList();
                     }
                 }
             }
