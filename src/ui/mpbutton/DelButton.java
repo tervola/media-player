@@ -2,8 +2,10 @@ package ui.mpbutton;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Tab;
 import javafx.scene.control.Tooltip;
 import ui.mptab.LocalTab;
+import ui.mptab.OnlineTab;
 
 /**
  * Created by user on 7/18/2017.
@@ -21,11 +23,16 @@ public class DelButton extends AbstractButton {
     @Override
     protected void setOnAction() {
         this.setOnAction(new EventHandler<ActionEvent>() {
-        @Override
-        public void handle ( final ActionEvent event){
-            LocalTab localTab = playList.getTabController().getLocalTab();
-            localTab.removeChecked();
-        }
-    });
-}
+            @Override
+            public void handle(final ActionEvent event) {
+                Tab oppenedTab = DelButton.this.tabController.getOppenedTab();
+                if (oppenedTab instanceof OnlineTab) {
+                    ((OnlineTab) oppenedTab).removeChecked();
+                } else if (oppenedTab instanceof LocalTab) {
+                    ((LocalTab) oppenedTab).removeChecked();
+                }
+
+            }
+        });
+    }
 }

@@ -1,7 +1,7 @@
 package test;
 
-import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by user on 7/10/2017.
@@ -25,7 +25,9 @@ public class Ttt {
 //        System.out.println(properties.getProperty("playlist"));
 
 
-        File file = new File("c:\\tmp\\123.txt");
+        ArrayList arrayList = new ArrayList(10);
+        arrayList.ensureCapacity(20);
+
 
 
     }

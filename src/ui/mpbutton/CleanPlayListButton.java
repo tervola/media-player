@@ -4,8 +4,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Tab;
 import javafx.scene.control.Tooltip;
 import ui.mptab.LocalTab;
+import ui.mptab.OnlineTab;
 
 import java.util.Optional;
 
@@ -33,8 +35,13 @@ public class CleanPlayListButton extends AbstractButton {
                 alert.setContentText(WARNING_MESSAGE);
                 Optional<ButtonType> result = alert.showAndWait();
                 if (result.get() == ButtonType.OK) {
-                    LocalTab localTab = playList.getTabController().getLocalTab();
-                    localTab.cleanPlayList();
+                    Tab oppenedTab = tabController.getOppenedTab();
+                    if(oppenedTab instanceof LocalTab){
+                        ((LocalTab) oppenedTab).cleanPlayList();
+
+                    } else if (oppenedTab instanceof OnlineTab) {
+                        ((OnlineTab) oppenedTab).cleanPlayList();
+                    }
                 }
 
             }

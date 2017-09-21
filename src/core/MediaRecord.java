@@ -11,6 +11,7 @@ public class MediaRecord {
     private String path;
     private String duration;
     private boolean isOnline;
+    private String uri;
 
     public MediaRecord() {
 
@@ -83,5 +84,13 @@ public class MediaRecord {
 
     public void setSelected(boolean selected) {
         isSelected = selected;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
+    }
+
+    public String getUri() {
+        return uri;
     }
 }

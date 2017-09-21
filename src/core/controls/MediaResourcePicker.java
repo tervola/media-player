@@ -2,6 +2,7 @@ package core.controls;
 
 import core.MediaRecord;
 import javafx.scene.control.Alert;
+import javafx.scene.control.TextInputDialog;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -10,27 +11,27 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by user on 8/7/2017.
  */
-public class FilePicker {
-    private static FilePicker instance;
+public class MediaResourcePicker {
+    private static MediaResourcePicker instance;
     private final Stage stage;
-
 
     private boolean closed;
     private final FileController controller;
 
-    public FilePicker() {
+    public MediaResourcePicker() {
         this.stage = new Stage();
         this.closed = true;
         this.controller = FileController.getInstance();
     }
 
-    public static FilePicker getInstance() {
+    public static MediaResourcePicker getInstance() {
         if (instance == null) {
-            instance = new FilePicker();
+            instance = new MediaResourcePicker();
         }
         return instance;
     }
@@ -46,6 +47,7 @@ public class FilePicker {
                 MediaRecord m = new MediaRecord();
                 m.setPath(file.getAbsolutePath());
                 m.setDisplayName(file.getName());
+                m.setOnline(false);
                 newRecords.add(m);
             }
 
@@ -57,14 +59,28 @@ public class FilePicker {
         return success;
     }
 
-    public boolean showLoadPlayListDialog() {
+    public boolean showLoadPlayListDialog(boolean isOnline) {
         openned();
         boolean success = false;
         File chosen = pickFile();
 
         if (chosen != null) {
-            List<MediaRecord> loadedRecords = this.controller.getPlayListFromConfig();
-            this.controller.setMediaRecords(loadedRecords);
+            List<MediaRecord> loadedRecords = this.controller.getPlayListFromConfig(chosen.getPath(), isOnline);
+
+            if(isOnline) {
+                this.controller.getOnlineMediaRecord().clear();
+            } else {
+                this.controller.getMediaRecords().clear();
+            }
+
+            for (MediaRecord r : loadedRecords) {
+                if (r.isOnline()) {
+                    this.controller.addOnlineMediaRecord(r);
+                } else {
+                    this.controller.addMediaRecord(r);
+                }
+            }
+
             success = true;
         }
         closed();
@@ -119,7 +135,7 @@ public class FilePicker {
     private FileChooser getSingleFileChooser() {
         final FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PL", "*.pl"));
-        return  fileChooser;
+        return fileChooser;
     }
 
     private void saveFile(String content, File file) {
@@ -133,5 +149,26 @@ public class FilePicker {
             alert.setContentText(e.getMessage());
             alert.showAndWait();
         }
+    }
+
+    public boolean showLoadOnlineDialog() {
+        openned();
+        boolean success = false;
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Add URL");
+        dialog.setHeaderText("Adding Online Resource URI");
+
+        Optional<String> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            MediaRecord m = new MediaRecord();
+            m.setDisplayName(result.get().trim());
+            m.setUri(result.get().trim());
+            m.setOnline(true);
+            this.controller.addOnlineMediaRecord(m);
+            success = true;
+        }
+        closed();
+        stage.close();
+        return success;
     }
 }

@@ -1,12 +1,12 @@
 package ui.mpbutton;
 
-import core.controls.FilePicker;
+import core.controls.FileController;
+import core.controls.MediaResourcePicker;
 import core.controls.PlayList;
+import core.controls.TabController;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import ui.mptab.LocalTab;
-
-import java.io.File;
 
 /**
  * Created by user on 7/14/2017.
@@ -14,14 +14,19 @@ import java.io.File;
 public abstract class AbstractButton extends Button {
 
 
+    protected final static boolean IS_ONLINE = true;
     protected final PlayList playList;
-    protected final FilePicker filePicker;
+    protected final MediaResourcePicker mediaResourcePicker;
     protected final LocalTab localTab;
+    protected final TabController tabController;
+    protected FileController controller;
 
     public AbstractButton() {
         this.playList = PlayList.getInstance();
-        this.filePicker = FilePicker.getInstance();
+        this.mediaResourcePicker = MediaResourcePicker.getInstance();
         this.localTab = playList.getTabController().getLocalTab();
+        this.controller = FileController.getInstance();
+        this.tabController = TabController.getInstance();
         setOnAction();
     }
 
@@ -41,7 +46,4 @@ public abstract class AbstractButton extends Button {
         return bulder.toString();
     }
 
-    public void updateConfigFile(File newPlayList) {
-        this.localTab.savePlayList(newPlayList.getAbsolutePath());
-    }
 }

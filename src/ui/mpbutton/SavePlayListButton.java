@@ -1,10 +1,11 @@
 package ui.mpbutton;
 
-import core.MediaRecord;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Tab;
 import javafx.scene.control.Tooltip;
 import ui.mptab.LocalTab;
+import ui.mptab.OnlineTab;
 
 import java.io.File;
 
@@ -26,32 +27,26 @@ public class SavePlayListButton extends AbstractButton {
         this.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent event) {
-                if (SavePlayListButton.this.filePicker.isClosed()) {
-                    String context = getRecords();
-                    File newPlayList = SavePlayListButton.this.filePicker.showSaveDialog(context);
+                if (SavePlayListButton.this.mediaResourcePicker.isClosed()) {
+
+                    String context = "";
+                    if (tabController.getOppenedTab() instanceof OnlineTab){
+                        context = SavePlayListButton.this.controller.getContentToSave(IS_ONLINE);
+                    } else if (tabController.getOppenedTab() instanceof LocalTab) {
+                        context = SavePlayListButton.this.controller.getContentToSave(!IS_ONLINE);
+                    }
+
+                    final File newPlayList = SavePlayListButton.this.mediaResourcePicker.showSaveDialog(context);
                     if (newPlayList != null) {
-                        SavePlayListButton.this.updateConfigFile(newPlayList);
+                        Tab oppenedTab = SavePlayListButton.this.tabController.getOppenedTab();
+                        if (oppenedTab instanceof LocalTab) {
+                            ((LocalTab) oppenedTab).updateConfigFile(newPlayList);
+                        } else if (oppenedTab instanceof OnlineTab) {
+                            ((OnlineTab) oppenedTab).updateConfigFile(newPlayList);
+                        }
                     }
                 }
             }
         });
     }
-
-    private String getRecords() {
-        StringBuilder stringBuilder = new StringBuilder();
-        LocalTab localTab = this.playList.getTabController().getLocalTab();
-        for (MediaRecord mediaRecord : localTab.getRecords()) {
-            stringBuilder.append(mediaRecord.getDisplayName());
-            stringBuilder.append(";");
-            stringBuilder.append(mediaRecord.getPath());
-            stringBuilder.append("\r\n");
-
-        }
-
-        return stringBuilder.toString();
-    }
-
-//    public void savePlayList(String pathToPlayList) {
-//        controller.saveProperties(PROPERTY_FIELD, pathToPlayList);
-//    }
 }

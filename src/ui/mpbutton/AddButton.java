@@ -23,8 +23,8 @@ public class AddButton extends AbstractButton {
         this.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(final ActionEvent event) {
-                if (AddButton.this.filePicker.isClosed()) {
-                    boolean isPickedNewRecords = AddButton.this.filePicker.showLoadDialog();
+                if (AddButton.this.mediaResourcePicker.isClosed()) {
+                    boolean isPickedNewRecords = AddButton.this.mediaResourcePicker.showLoadDialog();
                     if (isPickedNewRecords) {
                         LocalTab localTab = playList.getTabController().getLocalTab();
                         localTab.add();

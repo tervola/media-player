@@ -19,6 +19,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import ui.mpbutton.*;
 import ui.mptab.LocalTab;
+import ui.mptab.OnlineTab;
 
 /**
  * Created by user on 7/17/2017.
@@ -40,7 +41,7 @@ public class PlayList {
     private Text textTitle;
 
     private PlayList() {
-        this.tabController = new TabController();
+        this.tabController = TabController.getInstance();
         this.stage = createStage();
         this.textTitle = new Text();
     }
@@ -104,6 +105,11 @@ public class PlayList {
             @Override
             public void changed(ObservableValue<? extends Tab> observable, Tab oldValue, Tab newValue) {
                 PlayList.this.textTitle.setText(newValue.getText());
+                if (newValue instanceof LocalTab) {
+                    ((LocalTab) newValue).load();
+                } else if (newValue instanceof OnlineTab) {
+                    ((OnlineTab) newValue).load();
+                }
             }
         });
 
@@ -142,13 +148,14 @@ public class PlayList {
         this.stage.setOnShowing(new EventHandler<WindowEvent>() {
             @Override
             public void handle(WindowEvent event) {
-                PlayList.this.textTitle.setText(PlayList.this.tabController.getOppenedTab().getText());
+                Tab oppenedTab = PlayList.this.tabController.getOppenedTab();
+                PlayList.this.textTitle.setText(oppenedTab.getText());
 
-                if (PlayList.this.tabController.getOppenedTab() instanceof LocalTab) {
-                    LocalTab localTab = (LocalTab) PlayList.this.tabController.getOppenedTab();
-                    localTab.load();
+                if (oppenedTab instanceof LocalTab) {
+                    ((LocalTab) oppenedTab).load();
+                } else if (oppenedTab instanceof OnlineTab) {
+                    ((OnlineTab) oppenedTab).load();
                 }
-
             }
         });
         this.stage.show();
@@ -177,10 +184,6 @@ public class PlayList {
     private Scene createScene(final GridPane grid) {
         final Scene scene = new Scene(grid, 400, 600);
         //TODO: create size of playlist
-//        Rectangle2D primaryScreenBounds = Screen.getPrimary().getVisualBounds();
-//        stage.setX(primaryScreenBounds.getMaxX()/2 + 200);
-//        stage.setY(primaryScreenBounds.getMinY()/2 );
-//        scene.getStylesheets().add(Main.class.getResource(CSS_FILE).toExternalForm());
         return scene;
     }
 

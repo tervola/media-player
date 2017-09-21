@@ -11,14 +11,15 @@ import java.util.List;
  * Created by user on 7/20/2017.
  */
 public class TabController {
-    private static Tab locaTab;
-    private static Tab onlineTab;
+    private Tab localTab;
+    private Tab onlineTab;
+    private static TabController INSTANCE;
     public final List<Tab> tabList;
 
-    public TabController() {
-        locaTab = new LocalTab();
+    private TabController() {
+        localTab = new LocalTab();
         onlineTab = new OnlineTab();
-        this.tabList = Arrays.asList(locaTab, onlineTab);
+        this.tabList = Arrays.asList(localTab, onlineTab);
     }
 
     public List<Tab> getTabsList() {
@@ -35,7 +36,17 @@ public class TabController {
     }
 
     public LocalTab getLocalTab(){
-        return (LocalTab) this.locaTab;
+        return (LocalTab) localTab;
     }
 
+    public OnlineTab getOnlineTab() {
+        return (OnlineTab) onlineTab;
+    }
+
+    public static TabController getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new TabController();
+        }
+        return INSTANCE;
+    }
 }
