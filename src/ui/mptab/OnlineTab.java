@@ -5,7 +5,6 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -17,15 +16,13 @@ import java.util.List;
 /**
  * Created by user on 7/18/2017.
  */
-public class OnlineTab extends AbstractTab {
+public class OnlineTab extends AbstractTab implements PlayListTab {
 
     private final static String TEXT = "Online Media";
     private final static String TOOLTIP = "Online media from YouTube";
     private final ArrayList mediaOnlineRecords;
     private ObservableList<MediaRecord> onlineTableData;
     private TableView tableOnlineTableView;
-    private Node tableView;
-
 
     public OnlineTab() {
         setText(TEXT);

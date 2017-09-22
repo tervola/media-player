@@ -5,6 +5,8 @@ import core.controls.MediaResourcePicker;
 import core.controls.PlayList;
 import core.controls.TabController;
 import javafx.scene.control.Button;
+import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.control.Tab;
 import javafx.scene.control.Tooltip;
 import ui.mptab.LocalTab;
 import ui.mptab.OnlineTab;
@@ -49,4 +51,8 @@ public abstract class AbstractButton extends Button {
         return bulder.toString();
     }
 
+    protected void setActiveTab(Tab tab) {
+        final SingleSelectionModel<Tab> selectionModel = playList.getTabPane().getSelectionModel();
+        selectionModel.select(tab);
+    }
 }

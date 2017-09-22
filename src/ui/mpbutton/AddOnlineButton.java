@@ -2,8 +2,9 @@ package ui.mpbutton;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Tab;
 import javafx.scene.control.Tooltip;
-import ui.mptab.OnlineTab;
+import ui.mptab.PlayListTab;
 
 /**
  * Created by user on 7/18/2017.
@@ -26,8 +27,9 @@ public class AddOnlineButton extends AbstractButton {
                 if (AddOnlineButton.this.mediaResourcePicker.isClosed()) {
                     boolean isPickedNewRecords = AddOnlineButton.this.mediaResourcePicker.showLoadOnlineDialog();
                     if (isPickedNewRecords) {
-                        OnlineTab onlineTab = playList.getTabController().getOnlineTab();
-                        onlineTab.add();
+                        PlayListTab tab = playList.getTabController().getOnlineTab();
+                        tab.add();
+                        setActiveTab((Tab) tab);
                     }
                 }
             }

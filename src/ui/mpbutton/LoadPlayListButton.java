@@ -2,7 +2,9 @@ package ui.mpbutton;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Tab;
 import javafx.scene.control.Tooltip;
+import ui.mptab.PlayListTab;
 
 /**
  * Created by user on 9/8/2017.
@@ -22,16 +24,23 @@ public class LoadPlayListButton extends AbstractButton {
             @Override
             public void handle(final ActionEvent event) {
                 if (LoadPlayListButton.this.mediaResourcePicker.isClosed()) {
+
                     final boolean isOnline = LoadPlayListButton.this.mediaResourcePicker.showLoadPlayListDialog();
                     LoadPlayListButton.this.mediaResourcePicker.setCachedPlayList(isOnline);
 
                     if (isOnline) {
-                        localTab.loadFromSavedPlayList();
+                        loadAndUpdateTab(onlineTab);
                     } else {
-                        onlineTab.loadFromSavedPlayList();
+                        loadAndUpdateTab(localTab);
                     }
                 }
             }
         });
+    }
+
+    private void loadAndUpdateTab(PlayListTab tab) {
+        tab.loadFromSavedPlayList();
+        tab.load();
+        setActiveTab((Tab) tab);
     }
 }

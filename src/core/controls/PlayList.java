@@ -39,6 +39,7 @@ public class PlayList {
     private boolean closed = true;
     private final Stage stage;
     private Text textTitle;
+    private TabPane tabPane;
 
     private PlayList() {
         this.tabController = TabController.getInstance();
@@ -66,9 +67,10 @@ public class PlayList {
         StackPane center = new StackPane();
         center.setPrefHeight(550);
 
-        TabPane tabPane = createTabPanel();
+
+        this.tabPane = createTabPanel();
         tabPane.setStyle("-fx-border-color: black; -fx-border-width: 5px;");
-        center.getChildren().add(tabPane);
+        center.getChildren().add(this.tabPane);
 
         StackPane bottom = new StackPane();
         bottom.setPrefHeight(20);
@@ -193,5 +195,9 @@ public class PlayList {
 
     public TabController getTabController() {
         return this.tabController;
+    }
+
+    public TabPane getTabPane() {
+        return this.tabPane;
     }
 }

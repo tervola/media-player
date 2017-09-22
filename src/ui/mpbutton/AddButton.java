@@ -2,8 +2,9 @@ package ui.mpbutton;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Tab;
 import javafx.scene.control.Tooltip;
-import ui.mptab.LocalTab;
+import ui.mptab.PlayListTab;
 
 /**
  * Created by user on 7/18/2017.
@@ -26,8 +27,9 @@ public class AddButton extends AbstractButton {
                 if (AddButton.this.mediaResourcePicker.isClosed()) {
                     boolean isPickedNewRecords = AddButton.this.mediaResourcePicker.showLoadDialog();
                     if (isPickedNewRecords) {
-                        LocalTab localTab = playList.getTabController().getLocalTab();
-                        localTab.add();
+                        PlayListTab tab = playList.getTabController().getLocalTab();
+                        tab.add();
+                        setActiveTab((Tab) tab);
                     }
                 }
             }

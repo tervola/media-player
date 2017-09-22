@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by user on 7/18/2017.
  */
-public class LocalTab extends AbstractTab {
+public class LocalTab extends AbstractTab implements PlayListTab {
 
 
     private final static String TEXT = "Local Media";
@@ -69,7 +69,6 @@ public class LocalTab extends AbstractTab {
     }
 
     public void loadFromSavedPlayList() {
-
         List<MediaRecord> mediaRecords = this.controller.getMediaRecords();
 
         this.tableData = FXCollections.observableList(mediaRecords);
@@ -79,7 +78,6 @@ public class LocalTab extends AbstractTab {
     }
 
     public void load() {
-
         this.tableData = getCachedPlayList();
         this.controller.setMediaRecords(this.tableData);
 
