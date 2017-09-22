@@ -23,6 +23,7 @@ public abstract class AbstractTab extends Tab {
     protected final static String TITLE_URI = "URI";
     protected final static String PROPERTY_FIELD_ONLINE = "playlistlocal";
     protected final static String PROPERTY_FIELD_LOCAL = "playlistonline";
+    protected final static boolean ISONLINE = true;
 
 
     public AbstractTab() {

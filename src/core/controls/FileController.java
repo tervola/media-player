@@ -40,17 +40,6 @@ public class FileController {
     }
 
     public List<MediaRecord> getPlayListFromSavedPL(String filePath) {
-//        String path;
-//        if (filePath == null) {
-//            if (isOnline) {
-//                path = this.properties.get(PROPERTY_FIELD_PLAYLIST_ONLINE).toString();
-//            } else {
-//                path = this.properties.get(PROPERTY_FIELD_PLAYLIST_LOCAL).toString();
-//            }
-//        } else {
-//            path = filePath;
-//        }
-//        return readFile(path);
         return readFile(filePath);
     }
 
@@ -159,16 +148,6 @@ public class FileController {
         return readFile(tmp);
     }
 
-    public void setCachedLocalPlayList() {
-        String tmp = this.properties.get(PROPERTY_FIELD_CACHED_LOCAL_FILE).toString();
-        createCacheFile(tmp, false);
-    }
-
-    public void setCachedOnlinePlayList() {
-        final String tmp = this.properties.get(PROPERTY_FIELD_CACHED_ONLINE_FILE).toString();
-        createCacheFile(tmp, true);
-    }
-
     private void createCacheFile(final String tmp, final boolean isOnline) {
         try {
             Files.deleteIfExists(Paths.get(tmp));
@@ -217,11 +196,13 @@ public class FileController {
         this.mediaRecords.add(r);
     }
 
-    public List<MediaRecord> getAllRecords() {
-        List<MediaRecord> allRecords = new ArrayList<>();
-        allRecords.addAll(this.mediaRecords);
-        allRecords.addAll(this.onlineMediaRecords);
-        return allRecords;
+    public void setCachedPlayList(boolean isOnline) {
+        final String tmp;
+        if (isOnline) {
+            tmp = this.properties.get(PROPERTY_FIELD_CACHED_ONLINE_FILE).toString();
+        } else {
+            tmp = this.properties.get(PROPERTY_FIELD_CACHED_LOCAL_FILE).toString();
+        }
+        createCacheFile(tmp, isOnline);
     }
-
 }

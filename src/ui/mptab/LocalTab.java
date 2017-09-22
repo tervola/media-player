@@ -116,7 +116,7 @@ public class LocalTab extends AbstractTab {
     }
 
     private void updateTableData(ObservableList<MediaRecord> data) {
-        this.controller.setCachedLocalPlayList();
+        this.controller.setCachedPlayList(!ISONLINE);
         load();
     }
 

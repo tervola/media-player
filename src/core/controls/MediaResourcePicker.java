@@ -61,24 +61,27 @@ public class MediaResourcePicker {
 
     public boolean showLoadPlayListDialog() {
         openned();
-        boolean success = false;
+        boolean isOnline = false;
         File chosen = pickFile();
 
         if (chosen != null) {
             List<MediaRecord> loadedRecords = this.controller.getPlayListFromSavedPL(chosen.getPath());
             if(loadedRecords.size() > 0) {
-                final boolean isOnline = loadedRecords.get(0).isOnline();
+                isOnline = loadedRecords.get(0).isOnline();
                 if (isOnline){
                     this.controller.setOnlineMediaRecords(loadedRecords);
                 } else {
                     this.controller.setMediaRecords(loadedRecords);
                 }
-                success = true;
             }
         }
         closed();
         stage.close();
-        return success;
+        return isOnline;
+    }
+
+    public void setCachedPlayList(final boolean isOnline){
+        this.controller.setCachedPlayList(isOnline);
     }
 
     private File pickFile() {

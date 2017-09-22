@@ -89,7 +89,7 @@ public class OnlineTab extends AbstractTab {
     }
 
     private void updateTableData() {
-        this.controller.setCachedOnlinePlayList();
+        this.controller.setCachedPlayList(ISONLINE);
         load();
     }
 

@@ -7,6 +7,7 @@ import core.controls.TabController;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import ui.mptab.LocalTab;
+import ui.mptab.OnlineTab;
 
 /**
  * Created by user on 7/14/2017.
@@ -18,6 +19,7 @@ public abstract class AbstractButton extends Button {
     protected final PlayList playList;
     protected final MediaResourcePicker mediaResourcePicker;
     protected final LocalTab localTab;
+    protected final OnlineTab onlineTab;
     protected final TabController tabController;
     protected FileController controller;
 
@@ -25,6 +27,7 @@ public abstract class AbstractButton extends Button {
         this.playList = PlayList.getInstance();
         this.mediaResourcePicker = MediaResourcePicker.getInstance();
         this.localTab = playList.getTabController().getLocalTab();
+        onlineTab = playList.getTabController().getOnlineTab();
         this.controller = FileController.getInstance();
         this.tabController = TabController.getInstance();
         setOnAction();
