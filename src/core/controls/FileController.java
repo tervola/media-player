@@ -39,18 +39,19 @@ public class FileController {
         return INSTANCE;
     }
 
-    public List<MediaRecord> getPlayListFromConfig(String filePath, boolean isOnline) {
-        String path;
-        if (filePath == null) {
-            if (isOnline) {
-                path = this.properties.get(PROPERTY_FIELD_PLAYLIST_ONLINE).toString();
-            } else {
-                path = this.properties.get(PROPERTY_FIELD_PLAYLIST_LOCAL).toString();
-            }
-        } else {
-            path = filePath;
-        }
-        return readFile(path);
+    public List<MediaRecord> getPlayListFromSavedPL(String filePath) {
+//        String path;
+//        if (filePath == null) {
+//            if (isOnline) {
+//                path = this.properties.get(PROPERTY_FIELD_PLAYLIST_ONLINE).toString();
+//            } else {
+//                path = this.properties.get(PROPERTY_FIELD_PLAYLIST_LOCAL).toString();
+//            }
+//        } else {
+//            path = filePath;
+//        }
+//        return readFile(path);
+        return readFile(filePath);
     }
 
     private List<MediaRecord> readFile(String path) {

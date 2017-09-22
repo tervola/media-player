@@ -27,17 +27,13 @@ public class LoadPlayListButton extends AbstractButton {
                 if (LoadPlayListButton.this.mediaResourcePicker.isClosed()) {
 
                     Tab oppenedTab = LoadPlayListButton.this.tabController.getOppenedTab();
-                    boolean isLocalTab = oppenedTab instanceof LocalTab;
-
-                    
-//                    LoadPlayListButton.this.mediaResourcePicker.showLoadPlayListDialog(isLocalTab);
                     if (oppenedTab instanceof LocalTab) {
-                        boolean isPickedNewRecords = LoadPlayListButton.this.mediaResourcePicker.showLoadPlayListDialog(false);
+                        boolean isPickedNewRecords = LoadPlayListButton.this.mediaResourcePicker.showLoadPlayListDialog();
                         LocalTab tab = (LocalTab) oppenedTab;
                         tab.loadFromSavedPlayList();
                         controller.setCachedLocalPlayList();
                     } else if (oppenedTab instanceof OnlineTab) {
-                        boolean isPickedNewRecords = LoadPlayListButton.this.mediaResourcePicker.showLoadPlayListDialog(true);
+                        boolean isPickedNewRecords = LoadPlayListButton.this.mediaResourcePicker.showLoadPlayListDialog();
                         OnlineTab tab = (OnlineTab) oppenedTab;
                         tab.loadFromSavedPlayList();
                         controller.setCachedOnlinePlayList();

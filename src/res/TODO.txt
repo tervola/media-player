@@ -1,12 +1,13 @@
-UI: create Online tab
 UI: create fashion design
 UI: move styles to scc
-UI: ADD online
 UI - Controller: create favorits tab
 UI - create screen movies for online.
 UI - random play * all tabs
 UI - move save / load to another place!
 
+
+Controller: add records to end of list
+Controller: open loaded or added page
 Controller: add actions to PL buttons
 Controller: add actions to main Actions: PLAY
 Controller: add actions to main Actions: PAUSE
@@ -14,6 +15,7 @@ Controller: add actions to main Actions: BACK
 Controller: add actions to main Actions: STOP
 Controller: create favorits for music
 Controller: crypt playlists;
+
 
 
 Remote Auth to google
