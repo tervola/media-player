@@ -15,7 +15,7 @@ import javafx.util.Callback;
 /**
  * Created by user on 7/18/2017.
  */
-public abstract class AbstractTab extends Tab {
+public abstract class AbstractTab extends Tab implements PlayListTab {
 
     protected final FileController controller;
     protected final static String TITLE_INDEX = " ";

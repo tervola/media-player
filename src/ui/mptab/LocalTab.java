@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by user on 7/18/2017.
  */
-public class LocalTab extends AbstractTab implements PlayListTab {
+public class LocalTab extends AbstractTab {
 
 
     private final static String TEXT = "Local Media";

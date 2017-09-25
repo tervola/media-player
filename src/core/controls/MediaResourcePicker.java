@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,8 @@ import java.util.Optional;
  * Created by user on 8/7/2017.
  */
 public class MediaResourcePicker {
+    private static List<String> LOCAL_MEDIA_FORMATS = Arrays.asList("mp3");
+
     private static MediaResourcePicker instance;
     private final Stage stage;
 
@@ -43,6 +46,7 @@ public class MediaResourcePicker {
 
         if (chosen.size() > 0) {
             List<MediaRecord> newRecords = new ArrayList<>();
+            chosen = validateLocalRecords(chosen);
             for (File file : chosen) {
                 MediaRecord m = new MediaRecord();
                 m.setPath(file.getAbsolutePath());
@@ -66,9 +70,9 @@ public class MediaResourcePicker {
 
         if (chosen != null) {
             List<MediaRecord> loadedRecords = this.controller.getPlayListFromSavedPL(chosen.getPath());
-            if(loadedRecords.size() > 0) {
+            if (loadedRecords.size() > 0) {
                 isOnline = loadedRecords.get(0).isOnline();
-                if (isOnline){
+                if (isOnline) {
                     this.controller.setOnlineMediaRecords(loadedRecords);
                 } else {
                     this.controller.setMediaRecords(loadedRecords);
@@ -80,7 +84,7 @@ public class MediaResourcePicker {
         return isOnline;
     }
 
-    public void setCachedPlayList(final boolean isOnline){
+    public void setCachedPlayList(final boolean isOnline) {
         this.controller.setCachedPlayList(isOnline);
     }
 
@@ -166,5 +170,16 @@ public class MediaResourcePicker {
         closed();
         stage.close();
         return success;
+    }
+
+    private List<File> validateLocalRecords(List<File> chosen) {
+        List<File> rval = new ArrayList<>(chosen.size());
+        for (File file : chosen) {
+            String substr = file.getName().substring(file.getName().indexOf(".") + 1);
+            if (LOCAL_MEDIA_FORMATS.contains(substr.toLowerCase())) {
+                rval.add(file);
+            }
+        }
+        return rval;
     }
 }

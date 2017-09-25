@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * Created by user on 7/18/2017.
  */
-public class OnlineTab extends AbstractTab implements PlayListTab {
+public class OnlineTab extends AbstractTab {
 
     private final static String TEXT = "Online Media";
     private final static String TOOLTIP = "Online media from YouTube";

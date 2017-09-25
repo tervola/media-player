@@ -20,4 +20,9 @@ public interface PlayListTab {
      * add records to record list
      */
     void add();
+
+    /**
+     * remove selected item from play list
+     */
+    void removeChecked();
 }
