@@ -1,7 +1,7 @@
 package test;
 
+import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by user on 7/10/2017.
@@ -25,9 +25,13 @@ public class Ttt {
 //        System.out.println(properties.getProperty("playlist"));
 
 
-        ArrayList arrayList = new ArrayList(10);
-        arrayList.ensureCapacity(20);
+//        ArrayList arrayList = new ArrayList(10);
+//        arrayList.ensureCapacity(20);
 
+        File file = new File("c:\\tmp\\123.pl");
+        String name = file.getName();
+        String substring = name.substring(name.indexOf(".")+1);
+        System.out.println(substring);
 
 
     }

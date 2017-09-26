@@ -1,6 +1,7 @@
 package ui.mptab;
 
 import core.MediaRecord;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -53,6 +54,17 @@ public class OnlineTab extends AbstractTab {
         final TableColumn<MediaRecord, String> uriColumn = createUriColumn();
 
         this.tableOnlineTableView.getColumns().addAll(indexColumn, checkboxColumn, descriptionColumn, uriColumn);
+
+        this.tableOnlineTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                int selectedIndex = tableOnlineTableView.getSelectionModel().getSelectedIndex();
+                if (selectedIndex >= 0 ) {
+                    controller.setCurrentSelectedOnlineRecord(selectedIndex);
+                }
+            }
+        });
+
         this.tableOnlineTableView.setScaleShape(true);
 
     }
@@ -99,6 +111,15 @@ public class OnlineTab extends AbstractTab {
         this.tableOnlineTableView.setItems(this.onlineTableData);
         this.tableOnlineTableView.refresh();
         setContent(this.tableOnlineTableView);
+        Platform.runLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                tableOnlineTableView.requestFocus();
+                tableOnlineTableView.getSelectionModel().select(controller.getCurrentSelectedOnlineRecordIndex());
+            }
+        });
     }
 
     private ObservableList<MediaRecord> getCachedPlayList() {

@@ -5,9 +5,7 @@ UI - create screen movies for online.
 UI - random play * all tabs
 UI - move save / load to another place!
 
-
 Controller: add records to end of list
-Controller: open loaded or added page
 Controller: add actions to PL buttons
 Controller: add actions to main Actions: PLAY
 Controller: add actions to main Actions: PAUSE

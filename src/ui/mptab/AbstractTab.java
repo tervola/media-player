@@ -80,5 +80,4 @@ public abstract class AbstractTab extends Tab implements PlayListTab {
             System.out.println("there!!");
         }
     }
-
 }

@@ -1,6 +1,7 @@
 package ui.mptab;
 
 import core.MediaRecord;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -51,6 +52,15 @@ public class LocalTab extends AbstractTab {
         final TableColumn<MediaRecord, String> descriptionColumn = createDescriptionColumn();
 
         this.tableView.getColumns().addAll(indexColumn, checkboxColumn, descriptionColumn);
+        this.tableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+            @Override
+            public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+                int selectedIndex = tableView.getSelectionModel().getSelectedIndex();
+                if (selectedIndex >= 0 ) {
+                    controller.setCurrentSelectedLocalRecord(selectedIndex);
+                }
+            }
+        });
         this.tableView.setScaleShape(true);
     }
 
@@ -86,6 +96,16 @@ public class LocalTab extends AbstractTab {
         this.tableView.setItems(this.tableData);
         this.tableView.refresh();
         setContent(this.tableView);
+        System.out.println(controller.getCurrentSelectedLocalRecordIndex());
+        Platform.runLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                tableView.requestFocus();
+                tableView.getSelectionModel().select(controller.getCurrentSelectedLocalRecordIndex());
+            }
+        });
     }
 
     private void updateRowIndex() {

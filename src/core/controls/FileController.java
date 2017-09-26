@@ -26,8 +26,11 @@ public class FileController {
     private static String PROPERTY_FIELD_CACHED_FILE_VALUE = "pl.tmp";
     private List<MediaRecord> mediaRecords = new ArrayList<>();
     private List<MediaRecord> onlineMediaRecords = new ArrayList<>();
+    private int currentSelectedLocalRecord = 0;
+    private int currentSelectedOnlineRecord = 0;
 
     private FileController() {
+        System.out.println("Created!");
         this.properties = new Properties();
         loadProperties();
     }
@@ -204,5 +207,21 @@ public class FileController {
             tmp = this.properties.get(PROPERTY_FIELD_CACHED_LOCAL_FILE).toString();
         }
         createCacheFile(tmp, isOnline);
+    }
+
+    public void setCurrentSelectedLocalRecord(int index) {
+        this.currentSelectedLocalRecord = index;
+    }
+
+    public int getCurrentSelectedLocalRecordIndex() {
+        return this.currentSelectedLocalRecord;
+    }
+
+    public void setCurrentSelectedOnlineRecord(int index) {
+        this.currentSelectedOnlineRecord = index;
+    }
+
+    public int getCurrentSelectedOnlineRecordIndex() {
+        return this.currentSelectedOnlineRecord;
     }
 }
