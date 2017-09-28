@@ -1,5 +1,9 @@
 package ui.mptab;
 
+import core.MediaRecord;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TableView;
+
 /**
  * Created by user on 9/22/2017.
  */
@@ -25,4 +29,20 @@ public interface PlayListTab {
      * remove selected item from play list
      */
     void removeChecked();
+
+    /**
+     *
+     * @return TRUE if tab is online
+     */
+    boolean isOnline();
+
+    /**
+     * @return table view
+     */
+    TableView getTableView();
+
+    /**
+     * @return table data
+     */
+    ObservableList<MediaRecord> getTableData();
 }

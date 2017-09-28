@@ -2,12 +2,14 @@ package ui.mptab;
 
 import core.MediaRecord;
 import core.controls.FileController;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.util.Callback;
@@ -23,7 +25,7 @@ public abstract class AbstractTab extends Tab implements PlayListTab {
     protected final static String TITLE_URI = "URI";
     protected final static String PROPERTY_FIELD_ONLINE = "playlistlocal";
     protected final static String PROPERTY_FIELD_LOCAL = "playlistonline";
-    protected final static boolean ISONLINE = true;
+    protected final static boolean IS_ONLINE_TAB = true;
 
 
     public AbstractTab() {
@@ -42,11 +44,11 @@ public abstract class AbstractTab extends Tab implements PlayListTab {
         return indexColumn;
     }
 
-    protected TableColumn createChecboxColumn() {
+    protected TableColumn createChecboxColumn(PlayListTab tab) {
         final TableColumn<MediaRecord, Boolean> checkboxColumn = new TableColumn();
         checkboxColumn.setPrefWidth(25);
 
-        final CheckBox selectAllCkb = createSelectAllCheckbox();
+        final CheckBox selectAllCkb = createSelectAllCheckbox(tab);
         checkboxColumn.setGraphic(selectAllCkb);
 
         checkboxColumn.setCellValueFactory(
@@ -70,7 +72,19 @@ public abstract class AbstractTab extends Tab implements PlayListTab {
         return checkboxColumn;
     }
 
-    protected abstract CheckBox createSelectAllCheckbox();
+    protected CheckBox createSelectAllCheckbox(PlayListTab tab) {
+        final CheckBox checkBox = new CheckBox();
+        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                for (MediaRecord mediaRecord : tab.getTableData()) {
+                    changeMediaRecordsList(observable.getValue(), mediaRecord);
+                }
+                tab.getTableView().refresh();
+            }
+        });
+        return checkBox;
+    }
 
     protected void changeMediaRecordsList(Boolean value, MediaRecord mediaRecord) {
         mediaRecord.setSelected(value);
@@ -79,5 +93,21 @@ public abstract class AbstractTab extends Tab implements PlayListTab {
         } else {
             System.out.println("there!!");
         }
+
+    }
+
+    protected void renderAfterLoad(PlayListTab tab) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                TableView tableView = tab.getTableView();
+                tableView.requestFocus();
+                if (tab.isOnline()) {
+                    tableView.getSelectionModel().select(controller.getCurrentSelectedOnlineRecordIndex());
+                } else {
+                    tableView.getSelectionModel().select(controller.getCurrentSelectedLocalRecordIndex());
+                }
+            }
+        });
     }
 }

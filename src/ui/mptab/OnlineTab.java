@@ -1,7 +1,6 @@
 package ui.mptab;
 
 import core.MediaRecord;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -49,7 +48,7 @@ public class OnlineTab extends AbstractTab {
         this.tableOnlineTableView.setEditable(true);
 
         final TableColumn indexColumn = createIndexColumn();
-        final TableColumn checkboxColumn = createChecboxColumn();
+        final TableColumn checkboxColumn = createChecboxColumn(this);
         final TableColumn<MediaRecord, String> descriptionColumn = createDescriptionColumn();
         final TableColumn<MediaRecord, String> uriColumn = createUriColumn();
 
@@ -79,26 +78,13 @@ public class OnlineTab extends AbstractTab {
         return uriColumn;
     }
 
-    protected CheckBox createSelectAllCheckbox() {
-        final CheckBox checkBox = new CheckBox();
-        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                for (MediaRecord mediaRecord : OnlineTab.this.onlineTableData) {
-                    changeMediaRecordsList(observable.getValue(), mediaRecord);
-                }
-                OnlineTab.this.tableOnlineTableView.refresh();
-            }
-        });
-        return checkBox;
-    }
 
     public void add() {
         updateTableData();
     }
 
     private void updateTableData() {
-        this.controller.setCachedPlayList(ISONLINE);
+        this.controller.setCachedPlayList(IS_ONLINE_TAB);
         load();
     }
 
@@ -111,15 +97,7 @@ public class OnlineTab extends AbstractTab {
         this.tableOnlineTableView.setItems(this.onlineTableData);
         this.tableOnlineTableView.refresh();
         setContent(this.tableOnlineTableView);
-        Platform.runLater(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                tableOnlineTableView.requestFocus();
-                tableOnlineTableView.getSelectionModel().select(controller.getCurrentSelectedOnlineRecordIndex());
-            }
-        });
+        renderAfterLoad(this);
     }
 
     private ObservableList<MediaRecord> getCachedPlayList() {
@@ -184,5 +162,20 @@ public class OnlineTab extends AbstractTab {
         }
         this.controller.setOnlineMediaRecords(newList);
         updateTableData();
+    }
+
+    @Override
+    public boolean isOnline() {
+        return IS_ONLINE_TAB;
+    }
+
+    @Override
+    public TableView getTableView(){
+        return this.tableOnlineTableView;
+    }
+
+    @Override
+    public ObservableList<MediaRecord> getTableData(){
+        return this.onlineTableData;
     }
 }

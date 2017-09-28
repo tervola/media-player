@@ -1,7 +1,6 @@
 package ui.mptab;
 
 import core.MediaRecord;
-import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -48,7 +47,7 @@ public class LocalTab extends AbstractTab {
         this.tableView.setEditable(true);
 
         final TableColumn indexColumn = createIndexColumn();
-        final TableColumn checkboxColumn = createChecboxColumn();
+        final TableColumn checkboxColumn = createChecboxColumn(this);
         final TableColumn<MediaRecord, String> descriptionColumn = createDescriptionColumn();
 
         this.tableView.getColumns().addAll(indexColumn, checkboxColumn, descriptionColumn);
@@ -62,20 +61,6 @@ public class LocalTab extends AbstractTab {
             }
         });
         this.tableView.setScaleShape(true);
-    }
-
-    protected CheckBox createSelectAllCheckbox() {
-        final CheckBox checkBox = new CheckBox();
-        checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-            @Override
-            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
-                for (MediaRecord mediaRecord : LocalTab.this.tableData) {
-                    changeMediaRecordsList(observable.getValue(), mediaRecord);
-                }
-                LocalTab.this.tableView.refresh();
-            }
-        });
-        return checkBox;
     }
 
     public void loadFromSavedPlayList() {
@@ -96,16 +81,7 @@ public class LocalTab extends AbstractTab {
         this.tableView.setItems(this.tableData);
         this.tableView.refresh();
         setContent(this.tableView);
-        System.out.println(controller.getCurrentSelectedLocalRecordIndex());
-        Platform.runLater(new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                tableView.requestFocus();
-                tableView.getSelectionModel().select(controller.getCurrentSelectedLocalRecordIndex());
-            }
-        });
+        renderAfterLoad(this);
     }
 
     private void updateRowIndex() {
@@ -134,7 +110,7 @@ public class LocalTab extends AbstractTab {
     }
 
     private void updateTableData(ObservableList<MediaRecord> data) {
-        this.controller.setCachedPlayList(!ISONLINE);
+        this.controller.setCachedPlayList(!IS_ONLINE_TAB);
         load();
     }
 
@@ -152,6 +128,16 @@ public class LocalTab extends AbstractTab {
         }
         this.controller.setMediaRecords(newList);
         updateTableData(FXCollections.observableArrayList(newList));
+    }
+
+    @Override
+    public boolean isOnline() {
+        return !IS_ONLINE_TAB;
+    }
+
+    @Override
+    public TableView getTableView(){
+        return this.tableView;
     }
 
     public void updateConfigFile(File newPlayList) {
@@ -174,5 +160,10 @@ public class LocalTab extends AbstractTab {
                 }
         );
         return descriptionColumn;
+    }
+
+    @Override
+    public ObservableList<MediaRecord> getTableData(){
+        return this.tableData;
     }
 }

@@ -19,18 +19,14 @@ public class FileController {
     private Properties properties;
 
     private static String PROPERTY_FILE_PROPERTY = "config.properties";
-    private static String PROPERTY_FIELD_PLAYLIST_LOCAL = "playlistlocal";
-    private static String PROPERTY_FIELD_PLAYLIST_ONLINE = "playlistonline";
     private static String PROPERTY_FIELD_CACHED_LOCAL_FILE = "cache_local";
     private static String PROPERTY_FIELD_CACHED_ONLINE_FILE = "cache_online";
-    private static String PROPERTY_FIELD_CACHED_FILE_VALUE = "pl.tmp";
     private List<MediaRecord> mediaRecords = new ArrayList<>();
     private List<MediaRecord> onlineMediaRecords = new ArrayList<>();
     private int currentSelectedLocalRecord = 0;
     private int currentSelectedOnlineRecord = 0;
 
     private FileController() {
-        System.out.println("Created!");
         this.properties = new Properties();
         loadProperties();
     }
